@@ -3,7 +3,7 @@ import { TouchableHighlight, Image, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 
-export default class ViewIngredientsButton extends React.Component {
+export default class ActionButton extends React.Component {
   render() {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
@@ -15,7 +15,7 @@ export default class ViewIngredientsButton extends React.Component {
   }
 }
 
-ViewIngredientsButton.propTypes = {
+ActionButton.propTypes = {
   onPress: PropTypes.func,
   source: PropTypes.number,
   title: PropTypes.string

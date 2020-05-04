@@ -7,7 +7,7 @@ export function getWorkTitle(wtitle) {
   const Worktitle = wtitle.toUpperCase();
   const dataArray = [];
   workList.map(data => {
-    if (data.Details.Data.Work_Title.toUpperCase().includes(Worktitle)) {
+    if (data.WorkTitle.toUpperCase().includes(Worktitle)) {
       dataArray.push(data);
     }
   });
@@ -25,4 +25,17 @@ export function getWorkCode(wcode) {
     }
   });
   return data1Array;
+}
+
+export function getPlanType(wcode) {
+  console.log(wcode);
+  const Workcode = wcode.toUpperCase();
+  const data2Array = [];
+  workList.map(data => {
+    let id=JSON.stringify(data.Plantype).toUpperCase()
+    if (id.includes(Workcode)) {
+      data2Array.push(data);
+    }
+  });
+  return data2Array;
 }

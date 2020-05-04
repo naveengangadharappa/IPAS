@@ -1,6 +1,6 @@
 import React from 'react';
 import MenuImage from '../../components/MenuImage/MenuImage';
-import { Platform, Text, View,Image,TouchableHighlight } from 'react-native';
+import { Platform, Text, View,Image,TouchableHighlight,Alert } from 'react-native';
 import Constants from 'expo-constants';
 import styles from './styles';
 import * as Location from 'expo-location';
@@ -10,7 +10,8 @@ import Marker from 'react-native-maps';
 import { getDistance } from 'geolib';
 import MapViewDirections from 'react-native-maps-directions';
 //import {_getLocationAsync} from '../../data/ApiCalls';
-import {workList,heading} from '../../data/ApiCalls';
+import {workdetails,heading} from '../../data/ApiCalls';
+import { Work } from '../../data/dataArrays';
 
 export default class MapViews extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -50,14 +51,14 @@ export default class MapViews extends React.Component {
       },
     },*/
       {
-        title: workList[0].WorkId,
-        desc: workList[0].Details.Data.Work_Title,
+        title: workdetails.WorkId,
+        desc: workdetails.Work_Title,
         coordinates: {
-          latitude: 19.9800603,
-          longitude:73.7472607, 
+          latitude: (workdetails.Latitude=='')?19.9322:workdetails.Latitude,
+          longitude:(workdetails.Longitude==''),73.5307:workdetails.Longitude,
         },
       },
-      {
+     /* {
         title: workList[1].WorkId,
         desc: workList[1].Details.Data.Work_Title,
         coordinates: {
@@ -72,7 +73,7 @@ export default class MapViews extends React.Component {
           latitude: 19.9962012,
           longitude:73.7470148, 
         },
-      }]
+      }*/]
   };
 
   constructor(props) {
@@ -103,7 +104,7 @@ export default class MapViews extends React.Component {
   };
   
   onPressRecipe = item => {
-    this.props.navigation.navigate('Recipe', { item });
+    this.props.navigation.navigate('workdetails', { item });
   };
 
   getInitialState() {
@@ -124,82 +125,96 @@ export default class MapViews extends React.Component {
   }
 
   handleMarkerPress=(mark)=>{
-    item={
+    /*item={
       WorkId:mark.title,
       Details:{
         Data:{
           Work_Title:mark.desc
         }
       },
-    }
+    }*/
     console.log('This is coordinates informations');
     console.log(item);
     //this.props.navigation.navigate('Home'/*, { cords }*/);
-    this.props.navigation.navigate('Recipe', { item });
+   // this.props.navigation.navigate('Recipe', { item });
   }
   render() {
-    let GOOGLE_MAPS_APIKEY = 'AIzaSyCaUgJsLzvda41opRbMVIFIcNqnWQRAUQA';
     let text = 'Waiting..';
-    let long;
-    let lat;
+    let long=73.5307;
+    let lat=19.9322;
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
       let loc=this.state.location;
-      
-      long=parseFloat(JSON.stringify(loc.coords.longitude));//current loction longitude
-      lat=parseFloat(JSON.stringify(loc.coords.latitude));//current location latitude
-      console.log("orignal coords  "+loc.coords.latitude);
-      console.log(lat);
-     /* this.state.markers[0].coordinates.latitude=lat;
-      this.state.markers[0].coordinates.longitude=long;*/
-      console.log(this.state.markers[0].coordinates.latitude)
-      let i=0;
-      this.state.markers.map(mark => {
-      let distance=getDistance(mark.coordinates, {
-        latitude: lat,
-        longitude: long,
-    });
-    console.log(distance);
-     
-    if(distance<2000)
+    }
+    const { navigation } = this.props;
+    const options=navigation.getParam('options');
+    if(workdetails.Latitude==null||workdetails.Longitude==null)
     {
-      this.state.sortedmarkers[i++]=mark;
-    }
-    });
-    }
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.paragraph}>{text}</Text>
-        </View>
-        <MapView
-        style={styles.map}
-        minZoomLevel={1}
-        initialRegion={{
-            latitude: lat,
-            longitude: long,
-            latitudeDelta:1,
-            longitudeDelta:1,
-          }}
-        showsUserLocation={true} >
-        {this.state.sortedmarkers.map(mark => {
-         let newtitle=mark.title.toString();
-              return <MapView.Marker
-              id={1}
-              title={newtitle}//this should be work id
-              description={mark.desc}//this should be work tyitle
-              coordinate={{
-                latitude: mark.coordinates.latitude,
-                longitude: mark.coordinates.longitude,
-              }}
-              showsUserLocation={true}
-              onPress={(/*markerId*/) => {/*this.setState({selectedMarker: markerId})  this markerId gives detail information about selected co-ordinates */this.handleMarkerPress(mark)}}//work id  should be passede to this handleMarker func
-              />
-              })} 
-               
-        </MapView>
-      </View>  
-    );
+      Alert.alert("Work Location not found ?? Please check Longitude or latitude available for this work");
+      return (
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.paragraph}>{text}</Text>
+          </View>
+          <MapView
+          ref={MapView => (this.MapView = MapView)}
+          style={styles.map}
+          minZoomLevel={1}
+          initialRegion={{
+              latitude: lat,
+              longitude: long,
+              latitudeDelta:1,
+              longitudeDelta:1,
+            }}
+            loadingEnabled = {true}
+           loadingIndicatorColor="#666666"
+           loadingBackgroundColor="#eeeeee"
+           moveOnMarkerPress = {false}
+           showsUserLocation={true}
+           showsCompass={true}
+           showsPointsOfInterest = {false}
+           provider="google">
+            
+           </MapView>
+         </View>  
+      );
+    }else{
+       return (
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.paragraph}>{text}</Text>
+          </View>
+          <MapView
+          ref={MapView => (this.MapView = MapView)}
+          style={styles.map}
+          minZoomLevel={1}
+          initialRegion={{
+              latitude: lat,
+              longitude: long,
+              latitudeDelta:1,
+              longitudeDelta:1,
+            }}
+            loadingEnabled = {true}
+           loadingIndicatorColor="#666666"
+           loadingBackgroundColor="#eeeeee"
+           moveOnMarkerPress = {false}
+           showsUserLocation={true}
+           showsCompass={true}
+           showsPointsOfInterest = {false}
+           provider="google">
+             <MapView.Marker
+                title={workdetails.WorkId.toString()}//this should be work id
+                description={workdetails.Work_Title}//this should be work tyitle
+                coordinate={{
+                  latitude: workdetails.Latitude,//item.Latitude,
+                  longitude:workdetails.Longitude //item.Longitude,
+                }}
+                /> 
+           </MapView>
+         </View>  
+      );
+    } 
   }
 }
+

@@ -1,13 +1,21 @@
 import React from 'react';
-import {View,TextInput,StyleSheet,
+import {View,StyleSheet,
   Button,
   Text,
   Alert,
-  Image } from 'react-native';
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView } from 'react-native';
 import styles from './styles';
-import ModalDropdown from 'react-native-modal-dropdown';
 import { AppLoading } from 'expo'
-import { Districts,GetDistrict,GetLoginStatus,GetPropsedWorkList} from '../../data/ApiCalls';
+import { Districts,district,GetDistrict,GetLoginStatus} from '../../data/ApiCalls';
+import { Dropdown } from 'react-native-material-dropdown';
+import {
+  TextField,
+} from 'react-native-material-textfield';
+import PasswordInputText from 'react-native-hide-show-password-input';
+import Spinner from 'react-native-loading-spinner-overlay';
+import KeyboardResponsiveView from 'react-native-keyboard-responsive-view';
 
 
 export default class LoginScreen extends React.Component {
@@ -22,17 +30,13 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      onloaddata:false
+      onloaddata:false,
+      password: '',
+      uname: '',
     }
-    /*GetDistrict().then((data)=>{
-      console.log(data);
-    }).catch((err)=>{
-      console.log(err)
-    });*/
+   
   }
 
-  uname='';
-  password='';
   did='';
   onlinestate='online';
   loginstate;
@@ -44,6 +48,7 @@ export default class LoginScreen extends React.Component {
   loaddistrict=async()=>{
     try{
      let result= await GetDistrict()
+     console.log(result);
      this.setState({
       onloaddata:true
      })
@@ -51,6 +56,14 @@ export default class LoginScreen extends React.Component {
     catch(err){
       console.log(err)
     }
+  }
+
+  finddid=(dist)=>{
+    district.map(item=>{
+      if(item.name==dist){
+       this.did=item.id
+      }
+     });
   }
 
   login=()=>{
@@ -62,16 +75,11 @@ export default class LoginScreen extends React.Component {
     }
     else{
       console.log(this.did);
-      GetLoginStatus(this.did,this.uname,this.password).then((loginstatus)=>{
+      GetLoginStatus(this.did,this.state.uname,this.state.password).then((loginstatus)=>{
         console.log(loginstatus);
         if(loginstatus){
-         /* GetPropsedWorkList('','','','Alloted_work').then((data)=>{
-           this.props.navigation.navigate('Home');
-          }).catch((error)=>{
-            console.log(error);
-          })*/
-          // GetPropsedWorkList('','','','Alloted_work')
-          let heading='Alloted work';
+          this.setState({uname:"",password:""});
+          let heading='Alloted_work';
           this.props.navigation.navigate('Home',{heading});
       }
       else{
@@ -88,33 +96,43 @@ export default class LoginScreen extends React.Component {
     const loadData=this.state.onloaddata
     if(!loadData)
     {
-      return <AppLoading/>
+      return (<View styles={styles.container1}><Spinner
+        //visibility of Overlay Loading Spinner
+        visible={!loadData}
+        //Text with the Spinner 
+        textContent={'Loading...'}
+        //Text style of the Spinner Text
+        textStyle={styles.spinnerTextStyle}
+      /></View>)
     }
     if(this.onlinestate==='online'){
       return (
-      <View style={styles.container}>
+       // <ImageBackground source={require('../../../assets/icons/background6.jpg')} style={{width: '100%', height: '100%'}}>
+  <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+    >
+      <View  style={styles.container2}>
         <Image style={styles.Image} source={require('../../../assets/icons/dpclogo.jpg') }/>
         <Dropdown
         label='Select District'
-        selectedItemColor='gray'
+        textColor='rgba(0, 0, 0, .38)'
+        itemColor='rgba(0, 0, 0, .54)'
+        baseColor='rgba(0, 0, 0, .87)'
         data={Districts}
-        onChangeText={( text)=>{this.did=text;}}
+        onChangeText={( text)=>this.finddid(text)}
       />
         
-
-        <TextInput 
-        style={styles.InputBox} 
-        placeholder='User-Id'
-        onChangeText={( text)=>{this.uname=text;}}
-        value={( text)=>{this.uname=text;}}
+        <TextField
+        label='User-ID'
+        value={this.state.uname}
+        onChangeText={( uname)=>this.setState({ uname })}
       />
-
-      <TextInput secureTextEntry={true}  
-        style={styles.InputBox} 
-        placeholder='Password'
-        onChangeText={( text)=>{this.password=text;}}
-        value={( text)=>{this.password=text;}}
-      />
+       
+      <PasswordInputText
+        value={this.state.password}
+        onChangeText={ (password) => this.setState({ password }) }
+      /> 
     
       <Button
         style={styles.button}
@@ -122,6 +140,8 @@ export default class LoginScreen extends React.Component {
         onPress={this.login}
       />
       </View>
+      </KeyboardAvoidingView>
+      //</ImageBackground>
     );
   }
   else{

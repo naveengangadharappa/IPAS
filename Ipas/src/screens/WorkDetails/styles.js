@@ -12,10 +12,11 @@ const RECIPE_ITEM_MARGIN = RECIPE_ITEM_OFFSET * 2;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:"#E7E6E1",
     flex: 1,
     alignItems: 'center',
     margin: RECIPE_ITEM_OFFSET,
-    marginTop: 38,
+    marginTop: 15,
     //width: (SCREEN_WIDTH - RECIPE_ITEM_MARGIN) / numColumns - RECIPE_ITEM_OFFSET,
     height: RECIPE_ITEM_HEIGHT + 60
   },
@@ -33,9 +34,9 @@ const styles = StyleSheet.create({
   },
   //container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
   header: { height: 50, backgroundColor: '#537791' },
-  text: { textAlign: 'center', fontWeight: '100', padding:2},
+  text: { textAlign: 'center', fontWeight: '100', padding:8},
   dataWrapper: { marginTop: -1 },
-  row: { height: 40, backgroundColor: '#E7E6E1' },
+  row: { height: 'auto', width: 'auto', backgroundColor: '#E7E6E1'},
   Heading:{
     paddingLeft:4,
     fontSize:18,

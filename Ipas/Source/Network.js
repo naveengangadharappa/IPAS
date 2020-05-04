@@ -1,9 +1,8 @@
 import React , { useState } from 'react';
 
-function checkOnline()
+export default function checkOnline()
 {
-  Console.log("entered online check");
+  console.log("entered online check");
   return true;  
 }
 
-export {checkOnline};

@@ -6,8 +6,23 @@ const { width: viewportWidth } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor:"#E7E6E1",
     flex: 1
+  },
+  row: { height: 'auto', width: 'auto', backgroundColor: '#E7E6E1',textAlign:'center',},
+  tbl:{borderWidth: 1, borderColor: '#C1C0B9',marginHorizontal:11,marginVertical:11},
+  text: { textAlign: 'center', fontWeight: '100', padding:8},
+  container1: {
+    flex: 1,
+    justifyContent: 'center',
+    textAlign: 'center',
+    paddingTop: 30,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+    opacity:0.5,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
   carouselContainer: {
     minHeight: 300
@@ -21,16 +36,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginRight:20
   },
+  textboxhide:{
+    opacity:0,
+    width:1,
+    height:1,
+  },
   image: {
     ...StyleSheet.absoluteFillObject,
     width: '100%',
-    height: 300
+    height: 300,
+    backgroundColor:"white"
   },
   imageContainer: {
     flex: 1,
     justifyContent: 'center',
     width: viewportWidth,
-    height: 300
+    height: 300,
+    backgroundColor:"white"
   },
   paginationContainer: {
     flex: 1,
@@ -43,8 +65,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginHorizontal: 3,
-    backgroundColor:'darkgray'
+    marginHorizontal: 0
   },
   infoRecipeContainer: {
     flex: 1,
@@ -55,10 +76,11 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    flexDirection: 'row',
+    //flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginLeft:25,
+    //marginLeft:10,
+    backgroundColor:"darkgray",
   },
   buttonContainer: {
     flex: 1,
@@ -82,8 +104,10 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 14,
     fontWeight: 'bold',
-    margin: 10,
-    color: '#2cd18a'
+    margin: 2,
+    //color: '#2cd18a',
+    color: 'white',
+    
   },
   infoDescriptionRecipe: {
     textAlign: 'left',
@@ -97,7 +121,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center'
+  },
+  btnContainer: {
+    //position: 'absolute',
+    flex: 1,
+    alignItems: 'center',
+    borderRadius: 180,
+    padding: 8,
+    margin: 10,
+    //top: 30, 
+    //right: 10,
+    //height:35,
+    //width:30,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3
+  },
+  btnIcon: {
+   height: 17,
+   width: 17
   }
+
 });
 
 export default styles;

@@ -9,8 +9,20 @@ const styles = StyleSheet.create({
   category: RecipeCard.category,
   Heading:{
   paddingLeft:4,
-  fontSize:18,
-  }
+  fontSize:14,
+  },
+  container1: {
+    flex: 1,
+    justifyContent: 'center',
+    textAlign: 'center',
+    paddingTop: 30,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+    opacity:0.5,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
 },
 );
 
